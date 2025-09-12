@@ -4,8 +4,6 @@
 > Goal: Install **Docker Desktop**, confirm it runs, and know when to use **Rosetta** for x86/amd64 images.
 
 ---
-### TEST!"§$
----
 
 ## 1) System requirements (quick)
 
