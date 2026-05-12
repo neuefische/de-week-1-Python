@@ -35,7 +35,7 @@ uv venv --python 3.11.3
   ```
 4. **(Optional) Jupyter & data stack for local runs**
 ```bash
-uv pip install notebook jupyterlab pandas numpy matplotlib seaborn
+uv add notebook jupyterlab pandas numpy matplotlib seaborn
 ```
 5. **Launch notebooks**
 ```bash
