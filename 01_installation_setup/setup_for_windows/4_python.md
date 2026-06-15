@@ -22,11 +22,7 @@ pyenv install -l
 
 Choose **one**:
 
-```powershell
-# A) Install a specific patch release
-pyenv install 3.11.13
-
-# B) Match screenshots exactly
+```
 pyenv install 3.11.3
 ```
 
