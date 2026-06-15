@@ -33,7 +33,7 @@ If you hit SSL/readline/tk errors, make sure you installed the macOS build deps 
 ## 3) Make it your default (for your user)
 
 ```bash
-pyenv global 3.11.13   # or: pyenv global 3.11
+pyenv global 3.11.3   # or: pyenv global 3.11
 ```
 
 You can also set per-project versions with `pyenv local 3.11.13` or for just this shell with `pyenv shell 3.11.13`. See pyenv usage. ([GitHub][3])
