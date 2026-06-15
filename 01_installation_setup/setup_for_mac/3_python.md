@@ -20,7 +20,7 @@ Choose **one**:
 
 ```bash
 # A) Install a specific patch release
-pyenv install 3.11.13
+pyenv install 3.11.3
 
 # B) Install the latest 3.11.x via prefix
 pyenv install 3.11
