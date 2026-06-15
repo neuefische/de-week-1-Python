@@ -37,7 +37,7 @@ This downloads and compiles Python (first time takes a few minutes). If compilat
 ## 3) Make it your default (for your user)
 
 ```bash
-pyenv global 3.11.13    # or: pyenv global 3.11
+pyenv global 3.11.3    # or: pyenv global 3.11
 ```
 
 ---
