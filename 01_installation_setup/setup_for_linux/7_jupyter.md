@@ -1,144 +1,185 @@
-# Jupyter on Ubuntu/Debian — Install & Verify
+# Jupyter on Linux — Install & Verify (uv)
 
-> Target audience: Students using **Ubuntu/Debian** (including WSL).
-> Goal: Install **Jupyter Notebook** (and optionally **JupyterLab**) with `pip`, using a virtual environment for clean isolation. Steps mirror the official docs.
+> Target audience: Students using **Linux** (Ubuntu or other distributions).
+> Goal: Install **JupyterLab** and **Jupyter Notebook** once, globally, with
+> `uv tool` — then launch them from any folder or from VS Code, no project
+> or virtual environment activation needed.
 
 ---
 
 ## 1) Prerequisites
 
-* **Python 3** and **pip** available (system Python or via `pyenv`).
-* Basic terminal access and `sudo` privileges (only if installing Python).
-* Jupyter recommends installing with **pip**; use a **virtual environment** to avoid polluting system packages. ([jupyter.org][1], [Python documentation][2])
+* **uv** installed → see `1_uv.md`
+* **Python** installed via uv → see `2_python.md`
 
-Check versions:
+Check:
 
 ```bash
-python --version
-python -m pip --version
+uv --version
 ```
 
-If Python/pip are missing, install Python first (e.g., with `pyenv`) and return here.
+No `pip`, `apt install python3`, or pyenv needed — uv replaces them.
+([Astral][1])
 
 ---
 
-## 2) Create & activate a virtual environment (recommended)
+## 2) Install Jupyter (once)
 
 ```bash
-# from your project folder
-python -m venv .venv
-source .venv/bin/activate
+uv tool install jupyterlab --with-executables-from notebook --with pip
 ```
 
-This uses the standard library `venv` module. ([Python documentation][3])
+What this does:
 
-> Tip: To leave the venv later: `deactivate`.
+* Installs JupyterLab **and** classic Notebook into one isolated, persistent
+  environment — your project environments stay untouched.
+* Puts the commands `jupyter-lab` and `jupyter-notebook` into
+  `~/.local/bin` (already on your `PATH` from the uv setup).
+  `--with-executables-from notebook` is needed because `uv tool install`
+  only exposes the named package's own command by default.
+* `--with pip` adds `pip` to that environment, so `%pip install` works
+  inside notebooks (uv environments come without pip by default).
+  ([Astral][1], [Astral][2])
+
+If you see `command not found` afterwards, run `uv tool update-shell` and
+reopen the terminal.
 
 ---
 
-## 3) Install Jupyter Notebook (or JupyterLab)
-
-### Option A — Notebook (classic interface, Notebook 7)
+## 3) Launch — from any folder
 
 ```bash
-python -m pip install --upgrade pip
-python -m pip install notebook
+jupyter-lab          # JupyterLab
+# OR
+jupyter-notebook     # classic Notebook
 ```
 
-Launching Notebook 7 after install is still `jupyter notebook`. ([PyPI][4], [jupyter-notebook.readthedocs.io][5])
-
-### Option B — JupyterLab (next-gen UI)
-
-```bash
-python -m pip install jupyterlab
-```
-
-If you installed with `--user` instead of a venv, make sure `~/.local/bin` is on your `PATH` so `jupyter lab` is found:
-`export PATH="$HOME/.local/bin:$PATH"`. ([JupyterLab Documentation][6], [PyPI][7])
+Jupyter starts a local server and opens your browser (default:
+`http://localhost:8888`). ([docs.jupyter.org][5])
 
 ---
 
-## 4) Launch
+## 4) Install packages inside a notebook
 
-```bash
-# Notebook
-jupyter notebook
+Because `pip` was baked in during installation, use the `%pip` magic in a
+cell:
 
-# OR JupyterLab
-jupyter lab
+```python
+%pip install pandas
 ```
 
-Jupyter will start a local server and open your browser (default: `http://localhost:8888`). ([jupyter.org][1])
+* Always use `%pip`, not `!pip` — the magic installs into the exact
+  environment the running kernel uses; `!pip` may hit a different Python.
+* If `import` fails right after installing, restart the kernel
+  (**Kernel → Restart**) and run the cell again.
+* Packages installed this way live in the Jupyter tool environment. If you
+  ever re-run the `uv tool install ...` command from step 2, the environment
+  is rebuilt and `%pip`-installed packages are removed — install them again
+  afterwards.
 
 ---
 
-## 5) Create a new notebook
+## 5) Using notebooks in VS Code
 
-In the browser, use **New → Python 3 (ipykernel)** and start coding.
+VS Code runs notebooks through its **Jupyter extension** — it does *not* use
+the `jupyter-lab` server from step 2. What it needs is a registered kernel.
+([VS Code Docs][8])
 
-> Note: Installing Notebook also installs the **IPython kernel** for Python. If a kernel is missing in a specific environment, install it with `python -m pip install ipykernel`. ([docs.jupyter.org][8], [ipython.readthedocs.io][9])
+**Step 1 — Install the Jupyter extension**
+
+Open the Extensions view (**Ctrl+Shift+X**), search for
+`ms-toolsai.jupyter` and click **Install** ([Open VSX][9]). Four small
+companion extensions (Keymap, Renderers, Cell Tags, Slide Show) are
+installed automatically — that is expected.
+
+**Step 2 — Make a kernel visible to VS Code**
+
+Register the global Jupyter tool environment once:
+
+```bash
+"$(uv tool dir)/jupyterlab/bin/python" -m ipykernel install --user --name=uv-jupyter --display-name "Python (uv tool)"
+```
+
+**Step 3 — Select the kernel in VS Code**
+
+Open the `.ipynb` file → click **Select Kernel** (top right) →
+**Jupyter Kernel…** → choose `my-project` or `Python (uv tool)`.
+
+* If VS Code asks whether you trust the folder, click **Trust** —
+  Restricted Mode blocks cell execution. ([VS Code Docs][8])
+* Kernel not listed? Reload the window: **Ctrl+Shift+P** →
+  *Developer: Reload Window*.
+
+**Installing packages from VS Code cells**
+
+* `my-project` kernel: use `!uv add pandas` (recorded in `pyproject.toml`)
+  or `!uv pip install pandas` (environment only). `%pip` does **not** work
+  here — uv project environments contain no pip. ([Astral][2])
+* `Python (uv tool)` kernel: `%pip install pandas` works, exactly as in
+  step 4.
+
+> With Microsoft's optional **Python** extension installed, a project's
+> `.venv` also appears directly under **Python Environments…** in the
+> kernel picker — registration (step 2) is then unnecessary.
 
 ---
 
 ## 6) Verify
 
 ```bash
-jupyter --version          # shows Jupyter components
-jupyter notebook --version # Notebook version
-jupyter lab --version      # if you installed JupyterLab
-```
-
-Notebook 7 and JupyterLab report their versions here. ([jupyter-notebook.readthedocs.io][5], [JupyterLab Documentation][6])
-
----
-
-## 7) Stop Jupyter
-
-Press **Ctrl+C** in the terminal where it’s running, then confirm with **Y**.
-
-If port 8888 is in use, launch on a different port:
-
-```bash
-jupyter notebook --port 8889
-# or
-jupyter lab --port 8889
+jupyter-lab --version
+jupyter-notebook --version
+uv tool list                 # shows the Jupyter tool environment
 ```
 
 ---
 
-## 8) (Optional) Register the current venv as a named kernel
+## 7) Stop & keep up to date
 
-Useful when you manage multiple environments:
+To stop, press **Ctrl+C** in the terminal where Jupyter is running, then confirm with
+**Y**. 
+
+If port 8888 is in use, launch on another port:
 
 ```bash
-python -m pip install ipykernel
-python -m ipykernel install --user --name myenv --display-name "Python (myenv)"
+jupyter-lab --port 8889
 ```
 
-You’ll see **Python (myenv)** in the notebook Kernel list. ([ipython.readthedocs.io][9])
+Upgrade Jupyter (or all uv tools) with:
+
+```bash
+uv tool upgrade jupyterlab
+uv tool upgrade --all
+```
+
+([Astral][1], [docs.jupyter.org][5])
 
 ---
 
 ## References (Official)
 
-* **Install Jupyter (pip recommended)** — Project Jupyter: ([jupyter.org][1])
-* **Jupyter Notebook docs** (Notebook 7): ([jupyter-notebook.readthedocs.io][5])
-* **JupyterLab — Installation**: ([JupyterLab Documentation][6])
-* **Kernels overview / IPython kernel**: ([docs.jupyter.org][8])
-* **`venv` (Python virtual environments)**: ([Python documentation][3])
+* **Using tools (uv tool install / upgrade)** — Astral. ([Astral][1])
+* **Using uv with Jupyter** — Astral. ([Astral][2])
+* **Install Jupyter** — Project Jupyter. ([Jupyter][3])
+* **Running the Notebook** — Project Jupyter docs. ([docs.jupyter.org][5])
+* **Kernels & IPython kernel**. ([ipython][7])
+* **Jupyter Notebooks in VS Code**. ([VS Code Docs][8])
+* **Jupyter extension `ms-toolsai.jupyter`** — Open VSX. ([Open VSX][9])
 
 ---
 
 ### Scope
 
-This page targets **Ubuntu/Debian** setups and keeps to the simplest, officially recommended path: `pip` + virtual environments. If your course uses `conda` instead, installation commands differ but the launch steps (`jupyter notebook` / `jupyter lab`) are the same.
+This page targets **Linux** and mirrors the macOS/Windows lessons, using the
+**uv tool-based flow**: install once globally → launch from anywhere →
+`%pip install` inside notebooks → optional VS Code integration via the
+Jupyter extension. The older `pip` + `python -m venv` flow is replaced —
+uv handles isolation and PATH.
 
-[1]: https://jupyter.org/install "Project Jupyter | Installing Jupyter"
-[2]: https://docs.python.org/3/tutorial/venv.html "12. Virtual Environments and Packages"
-[3]: https://docs.python.org/3/library/venv.html "venv — Creation of virtual environments"
-[4]: https://pypi.org/project/notebook/ "Jupyter Notebook"
-[5]: https://jupyter-notebook.readthedocs.io/ "Jupyter Notebook Documentation — Jupyter Notebook 7.4.5 ..."
-[6]: https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html "Installation — JupyterLab 4.4.5 documentation"
-[7]: https://pypi.org/project/jupyterlab/ "jupyterlab"
-[8]: https://docs.jupyter.org/en/latest/install/kernels.html "Installing Kernels - Jupyter Documentation"
-[9]: https://ipython.readthedocs.io/en/stable/install/kernel_install.html "Installing the IPython kernel — IPython 9.4.0 documentation"
+[1]: https://docs.astral.sh/uv/guides/tools/ "Using tools — Astral Docs"
+[2]: https://docs.astral.sh/uv/guides/integration/jupyter/ "Using uv with Jupyter — Astral Docs"
+[3]: https://jupyter.org/install "Project Jupyter | Installing Jupyter"
+[5]: https://docs.jupyter.org/en/latest/running.html "Running the Notebook — Jupyter Documentation"
+[7]: https://ipython.readthedocs.io/en/stable/install/kernel_install.html "Installing the IPython kernel"
+[8]: https://code.visualstudio.com/docs/datascience/jupyter-notebooks "Jupyter Notebooks in VS Code"
+[9]: https://open-vsx.org/extension/ms-toolsai/jupyter "Jupyter extension — Open VSX"
