@@ -1,115 +1,84 @@
-# Python 3.11.x via pyenv-win — Install & Verify (Windows)
+# Installing Python with uv (Windows)
 
-> Target: **Windows 10/11 (64-bit)**
-> Goal: Use **pyenv-win** to install a stable Python **3.11.x** without touching any system Python.
-> Prereq: pyenv-win installed & configured (see `install-pyenv-windows.md`).
+## Goal
 
----
+Install Python using uv. You do **not** need the python.org installer, the
+Microsoft Store Python, or pyenv-win — uv downloads and manages its own
+standalone Python builds, and can even fetch Python automatically the first
+time a project needs it.
 
-## 1) Pick a 3.11 release
+## Prerequisites
 
-As of now, the latest 3.11 security release is **3.11.13** (June 3, 2025). If your course screenshots use **3.11.3**, that version is fine too. ([Python.org][3])
+- uv installed → see [3_uv.md](3_uv.md)
 
-List versions pyenv-win can install:
+## Step 1: Install Python
 
-```powershell
-pyenv install -l
-```
-
----
-
-## 2) Install Python
-
-Choose **one**:
-
-```
-pyenv install 3.11.3
-```
-
-If you see SSL/readline/Tk issues, revisit pyenv-win’s installation page; ensure PATH and env vars are correct. ([pyenv-win.github.io][1])
-
----
-
-## 3) Make it your default (for your user)
+Install the Python version used in this course (check with your coaches which
+version that is — example with 3.13):
 
 ```powershell
-pyenv global 3.11.13   # or 3.11.3
-pyenv rehash
+uv python install 3.13
 ```
 
-`pyenv rehash` refreshes shims after switching versions. ([Stack Overflow][4])
-
----
-
-## 4) Verify
+To install the latest available release instead:
 
 ```powershell
-python --version
-python -c "import sys,platform; print(sys.executable, platform.python_version())"
+uv python install
 ```
 
-Expected: `Python 3.11.x` and an executable path under `%USERPROFILE%\.pyenv\pyenv-win\...`.
-
-If `python` opens the Microsoft Store instead, **turn off** the Python App Installer aliases (see Step 3 in the pyenv file). ([pyenv-win.github.io][1])
-
----
-
-## 5) Useful commands
+You can install several versions side by side:
 
 ```powershell
-pyenv versions      # list installed versions
-pyenv which python  # see which interpreter is being used
-pyenv local 3.11.13 # per-project version (creates .python-version)
-pyenv shell 3.11.13 # this terminal session only
+uv python install 3.12 3.13
 ```
 
-(Behavior and commands per pyenv-win usage.) ([pyenv-win.github.io][1])
+## Step 2: See what is installed
 
----
-
-## Alternative: Official python.org installer (GUI)
-
-If you prefer the GUI installer instead of pyenv-win:
-
-1. Go to the **Python 3.11.3** release page and download the **Windows 64-bit installer**. ([Python.org][5])
-2. Run the installer and **check “Add Python to PATH”** (recommended). The official docs describe this PATH option. ([Python documentation][6])
-
-<p align="center">
-  <img src="asset/Check_Box.png" alt="Add Python to PATH" width="60%" />
-</p>
-
-3. Proceed with installation.
-
-<p align="center">
-  <img src="asset/Installing_python.png" alt="Installing Python on Windows" width="60%" />
-</p>
-
-4. Open a **new** Command Prompt and verify:
-
-```cmd
-python --version
+```powershell
+uv python list
 ```
 
-Expected: `Python 3.11.3`. (Use this method only if your course requires the exact patch; otherwise prefer pyenv-win so you can manage multiple versions cleanly.) ([Python documentation][6])
+This shows the Python versions uv manages (and the ones it can still
+download).
 
----
 
-## References (Official)
+## Step 3: Verify
 
-* **Python 3.11.13 release** (latest 3.11.x at time of writing). ([Python.org][3])
-* **python.org downloads (3.11.3 listed)**. ([Python.org][5])
-* **Using Python on Windows** — “Add Python to PATH” option. ([Python documentation][6])
-* **pyenv-win — Installation / env vars / alias note**. ([pyenv-win.github.io][1])
+```powershell
+uv run python --version
+```
 
----
+`uv run` automatically uses the pinned/managed Python — no virtual
+environment activation needed.
 
-### Scope
+Want a run plain `python <script_name>.py` command for running python script on your terminal instead of  `uv run <script_name>.py` as well? 
 
-Two separate files keep **pyenv-win setup** independent from **Python version install**, just like your Linux and macOS guides. This makes patch-version bumps simple without touching the pyenv instructions.
+Install with:
+>
+> ```powershell
+> uv python install 3.13 --default
+> ```
 
-[1]: https://pyenv-win.github.io/pyenv-win/docs/installation.html "Installation | pyenv-win"
-[2]: https://github.com/pyenv/pyenv "pyenv/pyenv: Simple Python version management"
-[3]: https://www.python.org/downloads/release/python-31113/ "Python Release Python 3.11.13"
-[4]: https://stackoverflow.com/questions/63941443/local-python-version-not-changing-after-installing-pyenv-win "Local python version not changing after installing pyenv-win"
-[5]: https://www.python.org/downloads/ "Download Python"
-[6]: https://docs.python.org/3/using/windows.html "4. Using Python on Windows"
+## Upgrading Python later
+
+```powershell
+uv python upgrade 3.13   # newest patch release of 3.13
+```
+
+## Troubleshooting
+
+- **`python` opens the Microsoft Store** → Windows ships "App execution
+  aliases" that hijack the `python` command. Go to
+  *Settings → Apps → Advanced app settings → App execution aliases* and
+  switch **off** the entries for `python.exe` and `python3.exe`. Using
+  `uv run python` avoids this problem entirely.
+- **Wrong Python is used** → uv prefers its own managed Pythons, but falls
+  back to a system Python if one exists. Force managed Python with
+  `uv run --managed-python ...` or check `uv python list`.
+- **Old pyenv-win shims interfere** → if `where python` still points into
+  `%USERPROFILE%\.pyenv`, remove the pyenv-win entries from your `PATH`
+  environment variable and restart the terminal. uv does not need pyenv-win.
+
+## Next step
+
+➡️ Python is ready — head back to the main setup guide.

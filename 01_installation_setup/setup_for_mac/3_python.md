@@ -1,77 +1,94 @@
-# Python 3.11.x via pyenv on macOS — Install & Verify
+# Installing Python with uv (macOS)
 
-> Target: **macOS** (Apple Silicon or Intel).
-> Goal: Use **pyenv** to install a stable Python **3.11.x** without touching the system Python.
-> Prereq: pyenv installed & configured (see `install-pyenv-macos.md`).
+## Goal
 
----
+Install Python using uv. You do **not** need the python.org installer,
+`brew install python`, or pyenv — uv downloads and manages its own standalone
+Python builds, and can even fetch Python automatically the first time a
+project needs it.
 
-## 1) Pick a 3.11 release
+## Prerequisites
 
-As of now, the latest 3.11 security release is **3.11.13** (June 3, 2025). For strict reproducibility with course materials, you may install **3.11.3** instead—both work the same way. ([Python.org][4])
+- uv installed → see [2_uv.md](2_uv.md)
 
-> Tip: pyenv supports **prefix auto-resolution**; installing `3.11` resolves to the latest 3.11.x known to pyenv. ([GitHub][3])
+## Step 1: Install Python
 
----
-
-## 2) Install Python with pyenv
-
-Choose **one**:
+Install the Python version used in this course (check with your coaches which
+version that is — example with 3.13):
 
 ```bash
-# A) Install a specific patch release
-pyenv install 3.11.3
-
-# B) Install the latest 3.11.x via prefix
-pyenv install 3.11
+uv python install 3.13
 ```
 
-If you hit SSL/readline/tk errors, make sure you installed the macOS build deps from the pyenv wiki (OpenSSL, readline, sqlite, zlib, tcl-tk, etc.). ([GitHub][1])
-
----
-
-## 3) Make it your default (for your user)
+To install the latest stable release instead:
 
 ```bash
-pyenv global 3.11.3   # or: pyenv global 3.11
+uv python install
 ```
 
-You can also set per-project versions with `pyenv local 3.11.13` or for just this shell with `pyenv shell 3.11.13`. See pyenv usage. ([GitHub][3])
+You can install several versions side by side:
 
----
+```bash
+uv python install 3.12 3.13
+```
 
-## 4) Verify
+## Step 2: See what is installed
+
+```bash
+uv python list
+```
+
+This shows the Python versions uv manages (and the ones it can still
+download).
+
+
+## Step 3: Verify
+
+```bash
+uv run python --version
+```
+
+`uv run` automatically uses the pinned/managed Python — no virtual
+environment activation needed.
+
+Want a run plain `python <script_name>.py` command for running python script on your terminal instead of  `uv run <script_name>.py` as well? 
+
+Install with:
+>
+> ```bash
+> uv python install 3.13 --default
+> ```
+
+If `python --version` then says `command not found`, the bin folder is missing
+from your `PATH`. Fix it once:
+
+```bash
+uv python update-shell
+```
+
+Then **close and reopen the terminal** and check again:
 
 ```bash
 python --version
-python -c "import sys,platform; print(sys.executable, platform.python_version())"
 ```
 
-Expected: `Python 3.11.x` and an executable under `~/.pyenv/versions/...`.
+**Note**: this step is optional — `uv run python ...` works without any PATH changes. You only need it if you want to type bare `python`.
 
----
-
-## 5) Useful commands
+## Upgrading Python later
 
 ```bash
-pyenv install -l   # list all versions available to install
-pyenv versions     # list installed versions
-pyenv which python # see the resolved interpreter path
+uv python upgrade 3.13   # newest patch release of 3.13
 ```
 
-These behaviors and commands are described in the pyenv README (shims, version selection). ([GitHub][3])
+## Troubleshooting
 
----
+- **Wrong Python is used** → uv prefers its own managed Pythons, but falls
+  back to system Python (e.g. the macOS `/usr/bin/python3`). Force managed
+  Python with `uv run --managed-python ...` or check `uv python list`.
+- **Old pyenv shims interfere** → if `which python` still points into
+  `~/.pyenv`, remove the pyenv lines from `~/.zshrc` and restart the
+  terminal. uv does not need pyenv.
 
-## References (Official)
+## Next step
 
-* **Python 3.11.13 release page** (current 3.11.x). ([Python.org][4])
-* **pyenv README** (install/usage, prefix resolution & version switching). ([GitHub][3])
-* **pyenv wiki — Suggested build environment (macOS)**. ([GitHub][1])
-
----
-
-[1]: https://github.com/pyenv/pyenv/wiki "Home · pyenv/pyenv Wiki · GitHub"
-[2]: https://formulae.brew.sh/formula/pyenv "pyenv — Homebrew Formulae"
-[3]: https://github.com/pyenv/pyenv "GitHub - pyenv/pyenv: Simple Python version management"
-[4]: https://www.python.org/downloads/release/python-31113/ "Python Release Python 3.11.13"
+➡️ Python is ready — head back to the main setup guide.
