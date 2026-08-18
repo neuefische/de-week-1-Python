@@ -9,8 +9,8 @@
 
 ## 1) Prerequisites
 
-* **uv** installed → see `1_uv.md`
-* **Python** installed via uv → see `2_python.md`
+* **uv** installed → see `3_uv.md`
+* **Python** installed via uv → see `4_python.md`
 
 Check:
 
