@@ -1,14 +1,14 @@
 # PostgreSQL + psql on Windows — Install & Verify
 
 > Target audience: Students on **Windows 10/11** (64-bit).
-> Goal: Install **PostgreSQL 16.9** (which includes the **psql** client) using the official EDB installer, then verify.
+> Goal: Install **PostgreSQL 18** (current major release; includes the **psql** client) using the official EDB installer, then verify.
 
 ---
 
 ## 1) Download the official Windows installer
 
 1. Go to the PostgreSQL Windows download page and follow the **Windows installers** link (EDB Interactive Installer). ([PostgreSQL][1])
-2. On the EDB downloads page, choose **PostgreSQL 16.9 → Windows x86-64**. ([EDB][2])
+2. On the EDB downloads page, choose the latest **PostgreSQL 18.x → Windows x86-64**. ([EDB][2])
 
 <p align="center">
    <img src="asset/EDB_photo.png" alt="" width="60%" />
@@ -20,13 +20,13 @@
 
 * Double-click the downloaded installer and click **Next** through the wizard.
 * Accept the license, pick the default install directory, and select components (see below).
-* You’ll be asked to set a password for the **`postgres` superuser** (there’s **no default password**—you must create one during install). Keep it safe. ([PostgreSQL][1], [Super User][3])
+* You'll be asked to set a password for the **`postgres` superuser** (there's **no default password** — you must create one during install). Keep it safe. ([PostgreSQL][1])
 
 **Select components** — ensure these are checked:
 
 * **PostgreSQL Server** (database server)
-* **pgAdmin 4** (GUI) — optional if you’ll install it separately; covered in the pgAdmin file
 * **Command Line Tools** (includes **psql**)
+* **pgAdmin 4** (GUI) — optional; also covered in the pgAdmin file
 * **Stack Builder** — optional; not required for this course ([PostgreSQL][1])
 
 <p align="center">
@@ -55,17 +55,38 @@ Accept the default **locale** and continue to install:
 
 ---
 
-## 3) Verify the installation
+## 3) Make `psql` available in PowerShell / CMD (PATH)
+
+The installer does **not** add PostgreSQL's `bin` folder to your `PATH` — `psql` works in the "SQL Shell" shortcut but not yet in a plain terminal. Add it (adjust `18` if you installed a different version):
+
+1. Start Menu → search **"Edit the system environment variables"** → **Environment Variables…**
+2. Under *User variables*, select **Path** → **Edit** → **New** and add:
+
+   ```
+   C:\Program Files\PostgreSQL\18\bin
+   ```
+
+3. **Close and reopen** PowerShell, then check:
+
+```powershell
+psql --version
+```
+
+Expected: `psql (PostgreSQL) 18.x`.
+
+---
+
+## 4) Verify the installation
 
 ### A) From **SQL Shell (psql)**
 
-Open **Start → SQL Shell (psql)**. If you accepted defaults, you can press **Enter** through the prompts (host, database, port, user), then enter the password you set during install.
+Open **Start → SQL Shell (psql)**. If you accepted defaults, press **Enter** through the prompts (host, database, port, user), then enter the password you set during install.
 
 <p align="center">
    <img src="asset/Testing_1.png" alt="" width="60%" />
 </p>
 
-If you get the `postgres=#` prompt, you’re connected. Try:
+If you get the `postgres=#` prompt, you're connected. Try:
 
 ```sql
 SELECT version();
@@ -77,13 +98,11 @@ SELECT version();
 
 ### B) From Command Prompt / PowerShell
 
-If your PATH includes PostgreSQL’s `bin`, you can run:
+With the PATH step (Step 3) done:
 
 ```powershell
-psql --version
+psql -U postgres -d postgres -c "SELECT version();"
 ```
-
-(You should see `psql (PostgreSQL) 16.9`.) The Windows installer provides the psql client as part of the tools. ([PostgreSQL][1])
 
 ---
 
@@ -101,9 +120,5 @@ This page focuses on the **server + psql** setup via the official installer. If 
 
 [1]: https://www.postgresql.org/download/windows/ "PostgreSQL: Windows installers"
 [2]: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads "Download PostgreSQL"
-[3]: https://superuser.com/questions/576623/default-password-for-postgresql "Default password for postgreSQL"
 [4]: https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/windows/ "Installing PostgreSQL on Windows"
 [5]: https://www.postgresql.org/download/ "Downloads"
-[6]: https://www.pgadmin.org/download/pgadmin-4-windows/ "pgAdmin 4 (Windows) Download"
-[7]: https://www.pgadmin.org/docs/pgadmin4/latest/master_password.html "Master Password — pgAdmin 4 9.6 documentation"
-[8]: https://www.pgadmin.org/download/ "Download"
