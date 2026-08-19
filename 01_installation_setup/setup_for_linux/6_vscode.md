@@ -89,6 +89,21 @@ If `code` is not found, **close and reopen the terminal** (or log out/in) so you
 
 ---
 
+### VS Code Extensions
+
+These are some essential extensions to make developer experience better and productive. Install them after VS Code is set up.
+
+1. **[Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)** – Core Python language support (required for everything below)
+2. **[Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)** – Fast IntelliSense, type checking, and auto-imports
+3. **[Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)** – Extremely fast Python linter and formatter (replaces autopep8, flake8, isort)
+4. **[Jupyter](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)** – Notebook support for data exploration
+5. **[Database Client](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2)** – SQL client for MySQL, PostgreSQL, and other databases
+6. **[Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv)** – Colorized CSV editing and quick SQL queries on data files
+7. **[Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)** – Lightweight REST API client inside VS Code (great for testing APIs without Postman)
+8. **[YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)** – YAML language support with validation and autocomplete (essential for Docker Compose, Airflow DAGs, K8s configs)
+
+---
+
 ## References (Official)
 
 * **Visual Studio Code on Linux (Debian/Ubuntu)** — install via `.deb` or repository, auto-update notes: ([Visual Studio Code][2])
@@ -104,17 +119,3 @@ This page focuses on **Ubuntu/Debian** to keep your course consistent and simple
 [1]: https://code.visualstudio.com/download "Download Visual Studio Code - Mac, Linux, Windows"
 [2]: https://code.visualstudio.com/docs/setup/linux "Visual Studio Code on Linux"
 [3]: https://code.visualstudio.com/docs/configure/command-line "Command Line Interface (CLI)"
-
-
-### Nice extensions to install in VScode
-1. autopep8
-2. Dev Containers 
-3. MySQL (from Database Client)
-4. Docker
-5. GitHub Copilot
-6. Pylance
-7. Python Type Hint
-8. Rainbow CSV
-
-<img width="410" height="324" alt="image" src="https://github.com/user-attachments/assets/6a1f8c81-38f1-4ebb-bf8d-295206fec24c" />
-

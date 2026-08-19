@@ -75,6 +75,21 @@ code .
 
 ---
 
+### VS Code Extensions
+
+These are some essential extensions to make developer experience better and productive. Install them after VS Code is set up.
+
+1. **[Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)** – Core Python language support (required for everything below)
+2. **[Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)** – Fast IntelliSense, type checking, and auto-imports
+3. **[Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)** – Extremely fast Python linter and formatter (replaces autopep8, flake8, isort)
+4. **[Jupyter](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)** – Notebook support for data exploration
+5. **[Database Client](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2)** – SQL client for MySQL, PostgreSQL, and other databases
+6. **[Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv)** – Colorized CSV editing and quick SQL queries on data files
+7. **[Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)** – Lightweight REST API client inside VS Code (great for testing APIs without Postman)
+8. **[YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)** – YAML language support with validation and autocomplete (essential for Docker Compose, Airflow DAGs, K8s configs)
+
+---
+
 ## References (Official)
 
 * **Set up VS Code on Windows** — installer, PATH note: ([Visual Studio Code][1])
@@ -92,16 +107,4 @@ This page mirrors our Linux/macOS guides: **download/winget → install → PATH
 [3]: https://winget.run/pkg/Microsoft/VisualStudioCode "Download and install Microsoft Visual Studio Code ..."
 [4]: https://code.visualstudio.com/docs/configure/command-line "Command Line Interface (CLI)"
 [5]: https://microsoft.github.io/vscode-essentials/en/01-getting-started.html "Getting started with VS Code · Visual Studio Code"
-
-### Nice extensions to install in VScode
-1. autopep8
-2. Dev Containers 
-3. MySQL (from Database Client)
-4. Docker
-5. GitHub Copilot
-6. Pylance
-7. Python Type Hint
-8. Rainbow CSV
-
-<img width="410" height="324" alt="image" src="https://github.com/user-attachments/assets/d947bfc5-3e0d-486d-81a2-b52705b2ce80" />
 
