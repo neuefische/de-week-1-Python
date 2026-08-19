@@ -1,79 +1,81 @@
 # pgAdmin 4 on macOS — Install & Launch
 
 > Target audience: Students using **macOS** (Apple Silicon or Intel).
-> Goal: Install **pgAdmin 4** using either the official DMG or Homebrew cask, then launch it.
+> Goal: Install **pgAdmin 4** using either the official DMG or Homebrew cask, launch it, and connect to your local PostgreSQL server.
 
 ---
 
-## Option A — Official DMG (Desktop app bundle)
-
-1. Go to the pgAdmin macOS download page and choose **Apple Silicon** or **Intel**. ([pgadmin.org][10])
-2. Download the `.dmg`, open it, and drag **pgAdmin 4** to **Applications**.
-3. Launch from **Applications** or Spotlight (Cmd+Space → “pgAdmin 4”).
-
-**References:** pgAdmin macOS downloads; pgAdmin downloads overview. ([pgadmin.org][10])
-
----
-
-## Option B — Homebrew (auto-updates via cask)
+## Option A — Homebrew cask (recommended if you use Homebrew)
 
 ```bash
 brew install --cask pgadmin4
 ```
 
-* Launch from **Applications** or Spotlight, or via Terminal:
+Launch from **Applications** or Spotlight (Cmd+Space → "pgAdmin 4"), or via Terminal:
 
 ```bash
-open /Applications/pgAdmin\ 4.app
+open "/Applications/pgAdmin 4.app"
 ```
 
-**Reference:** Homebrew cask for pgAdmin 4. ([Homebrew Formulae][11])
+The cask automatically picks the right build for your Mac and updates with `brew upgrade --cask pgadmin4`. ([Homebrew Formulae][11])
 
 ---
 
-## First-run tips
+## Option B — Official DMG (Desktop app bundle)
 
-* On first launch, pgAdmin asks you to set a **master password** (local credential storage).
-* To connect to your local PostgreSQL (installed via Homebrew), host is `localhost`, port `5432`. If you created a `postgres` superuser or use your macOS user as a role, supply that user and its password (if any).
-* If you used the **EDB installer**, use the superuser **password you set during install**.
+1. Go to the pgAdmin macOS download page and choose the build for your Mac: **Apple Silicon (arm64)** or **Intel (x86_64)**. ([pgadmin.org][10])
+2. Download the `.dmg`, open it, and drag **pgAdmin 4** to **Applications**.
+3. Launch from **Applications** or Spotlight.
+
+> Not sure which chip you have? **Apple menu → About This Mac** — "Chip Apple M…" = Apple Silicon, "Processor Intel" = Intel.
 
 ---
 
-## Verify pgAdmin connects
+## First-run behavior (Master Password)
 
-1. Start PostgreSQL (if installed via Homebrew):
+On first launch, pgAdmin may ask you to set a **Master Password** — it encrypts server passwords you choose to save. Set it and keep it safe. ([pgadmin.org][12])
+
+---
+
+## Connect pgAdmin to your local PostgreSQL
+
+1. Make sure PostgreSQL is running (Homebrew install from the PostgreSQL guide):
 
 ```bash
-brew services start postgresql@16
+brew services start postgresql@18
 ```
 
-2. In pgAdmin, **Add New Server** →
+2. In pgAdmin: right-click **Servers → Register → Server…** (or **Add New Server**).
+3. Fill in:
 
-   * **Name:** `Local`
-   * **Host:** `localhost`
-   * **Port:** `5432`
-   * **Username:** your PostgreSQL role (e.g., your macOS user or `postgres`)
-   * **Password:** as configured
+   * **General → Name:** `Local` (any name)
+   * **Connection → Host:** `localhost` | **Port:** `5432` | **Maintenance DB:** `postgres`
+   * **Username / Password:** depends on how you installed PostgreSQL:
+     * **Homebrew (`postgresql@18`)** → Username: your **macOS username**; leave **Password empty** (Homebrew uses *trust* authentication on localhost).
+     * **EDB installer** → Username: `postgres`; **Password:** the one you set during install.
 
-You should see your databases listed under the server node.
+4. **Save** — your databases appear under the server node.
+
+---
+
+## Troubleshooting
+
+* **Connection fails on a Homebrew install** → make sure you used your macOS username (run `whoami` to check), not `postgres`.
+* **Connection refused** → PostgreSQL isn't running; re-run the `brew services start` command above.
+* **"pgAdmin 4 is damaged / can't be opened"** → re-download from the official page and make sure you picked the right architecture (Apple Silicon vs Intel).
 
 ---
 
 ## References (Official)
 
-* **pgAdmin 4 (macOS) — Download page** (lists supported macOS versions, Apple Silicon/Intel builds). ([pgadmin.org][10])
+* **pgAdmin 4 (macOS) — Download page** (supported macOS versions, Apple Silicon/Intel builds). ([pgadmin.org][10])
 * **Homebrew cask: `pgadmin4`** (install command/version). ([Homebrew Formulae][11])
+* **pgAdmin docs — Master Password**. ([pgadmin.org][12])
+* **Homebrew formula: `postgresql@18`** (service management). ([Homebrew Formulae][1])
 
 ---
 
-[1]: https://formulae.brew.sh/formula/postgresql%4016 "postgresql@16 — Homebrew Formulae"
-[2]: https://github.com/Homebrew/homebrew-services "Homebrew Services (deprecated)"
-[3]: https://docs.brew.sh/Formula-Cookbook "Formula Cookbook"
-[4]: https://www.postgresql.org/download/macosx/ "macOS packages"
-[5]: https://formulae.brew.sh/formula/postgresql%4016 "postgresql@16 — Homebrew Formulae"
-[6]: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads "Download PostgreSQL"
-[7]: https://www.enterprisedb.com/postgres-tutorials/installation-postgresql-mac-os "Installation of PostgreSQL on Mac OS"
-[8]: https://postgresapp.com/downloads.html "Postgres.app Downloads"
-[9]: https://formulae.brew.sh/formula/libpq "libpq — Homebrew Formulae"
+[1]: https://formulae.brew.sh/formula/postgresql%4018 "postgresql@18 — Homebrew Formulae"
 [10]: https://www.pgadmin.org/download/pgadmin-4-macos/ "pgAdmin 4 (macOS)"
-[11]: https://formulae.brew.sh/cask/pgadmin4 "pgadmin4"
+[11]: https://formulae.brew.sh/cask/pgadmin4 "pgadmin4 — Homebrew Formulae"
+[12]: https://www.pgadmin.org/docs/pgadmin4/latest/master_password.html "Master Password — pgAdmin 4 documentation"

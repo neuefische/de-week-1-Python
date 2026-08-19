@@ -1,29 +1,29 @@
 # pgAdmin 4 on Windows — Install & Launch
 
 > Target audience: Students on **Windows 10/11** (64-bit).
-> Goal: Install **pgAdmin 4** and connect to a local PostgreSQL instance.
+> Goal: Install **pgAdmin 4** and connect it to your local PostgreSQL instance.
 
 ---
 
 ## Option A — Installed with PostgreSQL (EDB)
 
-If you **checked pgAdmin 4** during the PostgreSQL installer, it’s already installed. Launch **pgAdmin 4** from the Start menu. (The Windows installer from postgresql.org includes pgAdmin as an optional component.) ([PostgreSQL][1])
+If you **checked pgAdmin 4** during the PostgreSQL installer, it's already installed — launch **pgAdmin 4** from the Start menu. (The Windows installer linked from postgresql.org includes pgAdmin as an optional component.) ([PostgreSQL][1])
 
 ---
 
 ## Option B — Stand-alone pgAdmin installer
 
-1. Download **pgAdmin 4 for Windows** (choose the current version). ([pgadmin.org][6])
+1. Download **pgAdmin 4 for Windows** (choose the latest version, currently the 9.x series). ([pgadmin.org][6])
 2. Run the installer and follow the prompts.
 3. Launch **pgAdmin 4** from the Start menu.
 
-> The official pgAdmin downloads page lists supported Windows versions and provides the desktop installer. ([pgadmin.org][6])
+> The official pgAdmin downloads page lists supported Windows versions and provides the desktop installer. The package includes both the Desktop Runtime and the Web Application. ([pgadmin.org][6])
 
 ---
 
 ## First-run behavior (Master Password)
 
-* On recent pgAdmin releases, **Windows’ password store** is used by default in desktop mode. If it isn’t available, pgAdmin will **prompt for a Master Password** to encrypt saved server passwords. You may be asked to set or enter it on first launch. ([pgadmin.org][7])
+* On recent pgAdmin releases, **Windows' password store** is used by default in desktop mode. If it isn't available, pgAdmin will **prompt for a Master Password** to encrypt saved server passwords. You may be asked to set or enter it on first launch. ([pgadmin.org][7])
 
 ---
 
@@ -31,12 +31,20 @@ If you **checked pgAdmin 4** during the PostgreSQL installer, it’s already ins
 
 With PostgreSQL running (from the EDB install):
 
-1. In pgAdmin, **Add New Server**.
+1. In pgAdmin, right-click **Servers → Register → Server…** (or **Add New Server**).
 2. **General → Name:** `Local` (any name).
 3. **Connection → Host:** `localhost` | **Port:** `5432` | **Maintenance DB:** `postgres`
-4. **Username:** the PostgreSQL role you’ll use (often `postgres` or your Windows username).
+4. **Username:** `postgres`
 5. **Password:** the one you set during the PostgreSQL install.
-6. Save. You should now see your databases under the server node.
+6. **Save** — you should now see your databases under the server node.
+
+---
+
+## Troubleshooting
+
+* **"password authentication failed"** → use the superuser password you set in the PostgreSQL installer (there is no default password).
+* **Connection refused** → PostgreSQL service isn't running: Start Menu → search **services.msc** → find **postgresql-x64-18** → **Start**.
+* **Forgot the postgres password** → ask a coach; resetting requires editing `pg_hba.conf` and is covered in the course's debugging material.
 
 ---
 
@@ -54,10 +62,6 @@ With PostgreSQL running (from the EDB install):
 We keep the **PostgreSQL/psql** setup separate from **pgAdmin** (GUI) to reduce confusion, just like on Linux and macOS. If you used the EDB installer and already have pgAdmin, this page serves as a connection checklist.
 
 [1]: https://www.postgresql.org/download/windows/ "PostgreSQL: Windows installers"
-[2]: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads "Download PostgreSQL"
-[3]: https://superuser.com/questions/576623/default-password-for-postgresql "Default password for postgreSQL"
-[4]: https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/windows/ "Installing PostgreSQL on Windows"
-[5]: https://www.postgresql.org/download/ "Downloads"
 [6]: https://www.pgadmin.org/download/pgadmin-4-windows/ "pgAdmin 4 (Windows) Download"
-[7]: https://www.pgadmin.org/docs/pgadmin4/latest/master_password.html "Master Password — pgAdmin 4 9.6 documentation"
-[8]: https://www.pgadmin.org/download/ "Download"
+[7]: https://www.pgadmin.org/docs/pgadmin4/latest/master_password.html "Master Password — pgAdmin 4 documentation"
+[8]: https://www.pgadmin.org/download/ "pgAdmin Downloads"
