@@ -14,53 +14,26 @@ Please make sure you have **forked** the repo, clone it on your computer, and  t
 
 ## Set up your Environment
 
-The added [requirements file](requirements.txt) contains all libraries and dependencies we need to execute Pandas and Numpy. 
+We use [uv](https://docs.astral.sh/uv/) to manage the Python version, the virtual environment and the libraries (see `01_installation_setup/` for installing uv). The commands are the same on macOS, Windows and Linux.
 
-### **`macOS`** type the following commands : 
+1. In the terminal, inside the project folder, run:
 
-- Install the virtual environment and the required packages by following commands:
-
-    ```BASH
-    pyenv local 3.11.3
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
-    ```
-### **`WindowsOS`** type the following commands :
-
-- Install the virtual environment and the required packages by following commands.
-
-   For `PowerShell` CLI :
-
-    ```PowerShell
-    pyenv local 3.11.3
-    python -m venv .venv
-    .venv\Scripts\Activate.ps1
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-    ```
-    Or...
-
-    For `Git-Bash` CLI :
-  
-    ```Bash
-    pyenv local 3.11.3
-    python -m venv .venv
-    source .venv/Scripts/activate
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
+    ```bash
+    uv init
+    uv venv
     ```
 
-    **`Note:`**
-    If you encounter an error when trying to run `pip install --upgrade pip`, try using the following command:
+2. Open the folder in **VS Code**, open a notebook and select the kernel (top-right → **Select Kernel** → **Python Environments…** → `.venv`).
 
-    ```Bash
-    python.exe -m pip install --upgrade pip
+3. Install the libraries we need for Pandas and Numpy:
+
+    ```bash
+    uv add pandas numpy matplotlib ipykernel
     ```
-    
 
+    Add any further library the same way (`uv add <package>`).
 
+> **Note:** Every library you add with `uv add` is automatically written to the `pyproject.toml` file (and pinned in `uv.lock`). If you clone a project that already has a `pyproject.toml`, just run `uv sync` to install everything.
 
 At the end of this repo you should 
 - understand why Pandas  is valuable tools for Data Engineers

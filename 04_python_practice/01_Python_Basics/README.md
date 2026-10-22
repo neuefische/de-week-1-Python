@@ -18,28 +18,21 @@ This folder contains Jupyter notebooks for the **Python Basics** track. You’ll
 ## ⚡ Prerequisites
 
 * Python, Jupyter, and VS Code installed (see `02_Installation_and_setup/` for your OS)  
-* Recommended: **Python 3.11.3** in a project **virtual environment (venv)**, selected as your Jupyter kernel  
+* A project environment created with **uv**, selected as your Jupyter kernel  
 
 ---
 ## 🏁 Getting Started
 
 1. Open the project folder in **VS Code** or **JupyterLab**.  
-2. Create & activate a virtual environment:
+2. Create the project environment in the terminal:
 
-   * **Linux/macOS**
-
-     ```bash
-     python -m venv .venv
-     source .venv/bin/activate
-     ```
-   * **Windows (PowerShell)**
-
-     ```powershell
-     python -m venv .venv
-     .\.venv\Scripts\Activate.ps1
-     ```
-   * In VS Code: **Python: Select Interpreter** → choose `.venv`.
-3. Open a notebook and run cells with **Shift+Enter**.
+   ```bash
+   uv init
+   uv venv
+   ```
+3. In VS Code, open a notebook, click **Select Kernel** and choose the `.venv` environment.
+4. Install libraries with `uv add`, e.g. `uv add pandas numpy matplotlib ipykernel`. They are all recorded in the `pyproject.toml` file.
+5. Open a notebook and run cells with **Shift+Enter**.
 
 > Tip: Commit early and often (e.g., per notebook section).
 

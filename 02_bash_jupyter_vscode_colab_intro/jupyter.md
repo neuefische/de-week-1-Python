@@ -12,20 +12,17 @@ Choose one:
 * **In VS Code (recommended):**
 
   * Open your project folder → **Command Palette → “Jupyter: Create New Jupyter Notebook”** (or open an existing `.ipynb`).
-  * Pick the **kernel** (top-right) that matches your project’s environment (your `.venv` or pyenv version).
+  * Pick the **kernel** (top-right) that matches your project’s environment (the `.venv` created by `uv venv`).
 
 * **Standalone from a terminal:**
 
-  * Activate your project’s environment.
-
-    * Linux/macOS: `source .venv/bin/activate`
-    * Windows (PowerShell): `.venv\Scripts\Activate.ps1`
-  * Start Jupyter:
+  * From your project folder, start Jupyter through uv (no activation needed):
 
     ```bash
-    jupyter lab      # modern UI
+    uv add jupyterlab
+    uv run jupyter lab      # modern UI
     # or
-    jupyter notebook # classic UI
+    uv run jupyter notebook # classic UI
     ```
 
 Default URL is `http://localhost:8888`.
@@ -37,14 +34,13 @@ Default URL is `http://localhost:8888`.
 The kernel is **the interpreter that runs your code**.
 
 * In VS Code / JupyterLab, click **Select Kernel** and choose the interpreter for your project.
-* If your venv isn’t listed, install the kernel **inside that env**:
+* If your `.venv` isn’t listed, make sure it exists (`uv venv`) and has the kernel package:
 
   ```bash
-  python -m pip install ipykernel
-  python -m ipykernel install --user --name myenv --display-name "Python (myenv)"
+  uv add ipykernel
   ```
 
-  Then pick **Python (myenv)** as the kernel.
+  Then pick the `.venv` environment as the kernel.
 
 ---
 
@@ -94,11 +90,11 @@ plt.show()
 If you get “module not found”, install into **this** environment:
 
 ```python
-# In a notebook cell (works with the active kernel)
-%pip install pandas matplotlib
+# Run in the terminal, inside your project folder:
+uv add pandas matplotlib
 ```
 
-*(You can also use the terminal: `python -m pip install <pkg>` while your venv is active.)*
+All libraries added with `uv add` are recorded in the `pyproject.toml` file, so your environment is reproducible. Afterwards, restart the notebook kernel.
 
 ---
 
@@ -144,7 +140,7 @@ sales.head()
 ## 7) Mini-activity (15–20 minutes)
 
 1. Open your project folder in VS Code.
-2. Create a venv (if missing) and select its **kernel**.
+2. Create the environment (`uv init`, `uv venv`) if missing and select its **kernel**.
 3. New notebook `intro.ipynb`:
 
    * Make a **Markdown** title and a short goal.

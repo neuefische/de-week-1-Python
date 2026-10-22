@@ -18,7 +18,7 @@ This folder contains Jupyter notebooks that build on **Python Basics** and prepa
 ## 📝 Prerequisites
 
 * Completion of **Python Basics** (numbers, strings, `if/else`, loops, lists/sets/dicts, functions)  
-* Python **3.11.x** in a project **venv**, selected as your Jupyter kernel (see `02_Installation_and_setup/`)  
+* A project environment created with **uv**, selected as your Jupyter kernel (see `02_Installation_and_setup/`)  
 
 ---
 

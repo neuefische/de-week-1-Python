@@ -31,7 +31,7 @@ This folder builds on **Intermediate Python** and focuses on **Object-Oriented D
 ## 📝 Prerequisites
 
 * Completion of **Python Intermediate** (exceptions, iterators/generators, functional patterns, basic performance techniques)  
-* Python **3.11.x** in a **project venv**, selected as your Jupyter kernel (see `02_Installation_and_setup/`)  
+* A project environment created with **uv**, selected as your Jupyter kernel (see `02_Installation_and_setup/`)  
 
 ---
 

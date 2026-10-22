@@ -11,7 +11,7 @@
 2. **File → Open Folder…** (pick your course/project folder).
 3. Open a terminal **inside VS Code**: **Terminal → New Terminal** (or ``Ctrl+` `` / ``Cmd+` `` on macOS).
 
-> Tip: Keep each project in its **own folder** with a `.venv/` (or pyenv environment) for clean dependencies.
+> Tip: Keep each project in its **own folder** with a `.venv/` created by uv for clean dependencies.
 
 ---
 
@@ -27,7 +27,7 @@ Install these from the **Extensions** view (square icon on the left):
 
 ## 3) Use your Python environment
 
-1. Create/activate your venv for this project (see your OS guide in `02_Installation_and_setup/` if needed).
+1. Create the environment for this project with `uv init` and `uv venv` (see your OS guide in `01_installation_setup/` for installing uv).
 2. In VS Code, open the **Command Palette** (**Ctrl+Shift+P** / **Cmd+Shift+P**) → **Python: Select Interpreter** → pick your project’s interpreter (e.g., **.venv/bin/python** on Linux/macOS or **.venv\Scripts\python.exe** on Windows).
 3. New terminals opened in VS Code will auto-activate the environment (if you selected the interpreter and the Python extension is enabled).
 
@@ -91,9 +91,9 @@ Install these from the **Extensions** view (square icon on the left):
    3. Run script
 
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate   # Windows: .venv\Scripts\Activate.ps1
-   pip install -r requirements.txt
+   uv init
+   uv venv
+   uv add pandas numpy matplotlib   # recorded in pyproject.toml
    ````
 
    ```
@@ -122,16 +122,16 @@ Install these from the **Extensions** view (square icon on the left):
 * **Interpreter mismatch**
 
   * Re-run **Python: Select Interpreter** for this workspace.
-  * Ensure your venv exists and is activated in the terminal.
+  * Ensure your `.venv` exists (`uv venv`).
 
 * **Notebook kernel not found**
 
   * In the notebook, click **Select Kernel** and choose your project interpreter.
-  * If needed: `pip install ipykernel` inside the venv, then select it again.
+  * If needed: `uv add ipykernel`, then select the kernel again.
 
-* **`pip` installs to the wrong Python**
+* **Library installed but `import` fails**
 
-  * Use `python -m pip install <package>` (always picks the active interpreter).
+  * Install with `uv add <package>` (it goes into the project's `.venv` and is recorded in `pyproject.toml`), then restart the kernel.
 
 * **Terminal not activating venv**
 
@@ -143,7 +143,7 @@ Install these from the **Extensions** view (square icon on the left):
 ## 9) Mini-activity (15–20 minutes)
 
 1. **Open a new folder** `day2_playground/` in VS Code.
-2. **Create & select a venv** → run `python -m venv .venv`, activate it, then **Python: Select Interpreter**.
+2. **Create & select a venv** → run `uv init` and `uv venv`, then pick the kernel in a notebook (or **Python: Select Interpreter**). Add libraries with `uv add pandas numpy matplotlib` — they are all recorded in `pyproject.toml`.
 3. **Make `hello.py`** (above) and run it.
 4. **Create `notes.ipynb`** and run a cell that prints `sys.version` and a small list comprehension.
 5. **Write `README.md`** with a short checklist and preview it.

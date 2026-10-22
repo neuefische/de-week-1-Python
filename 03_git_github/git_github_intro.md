@@ -174,11 +174,7 @@ Conflicts happen when the same lines changed in two branches.
 * Notebooks are JSON; small diffs can look noisy.
 * **Keep outputs small** or **Clear All Outputs** before committing (especially big plots/large dataframes).
 * Don’t commit large datasets (`data/` belongs in `.gitignore` or in cloud storage).
-* For repeatability, also track `requirements.txt`:
-
-  ```bash
-  python -m pip freeze > requirements.txt
-  ```
+* For repeatability, also track `pyproject.toml` and `uv.lock` (uv updates them automatically whenever you run `uv add`).
 
 ---
 
