@@ -41,13 +41,10 @@ At the end of this repo you should
 - be able to do some EDA on a new dataset
 - know how to plot some basic plots for better data understanding
 
-This repo covers:
 
-- [Introduction to Pandas](01_pandas.ipynb)
-- [Practice Pandas functionalities](02_pandas_practice_1.ipynb)
-- [Introduction to Pandas visualization](03_pandas_visualization.ipynb)
-- [Practice Pandas functionalities and visualizations](04_pandas_practice_2.ipynb)
-- [More Pandas practice and EDA](05_pandas_practice_3.ipynb)
+
+Let start with [Introduction to Pandas](01_pandas.ipynb)
+
 
 
 
