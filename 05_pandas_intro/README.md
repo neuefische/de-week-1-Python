@@ -42,9 +42,10 @@ At the end of this repo you should
 - know how to plot some basic plots for better data understanding
 
 
-
-Let start with [Introduction to Pandas](01_pandas.ipynb)
-
+## Repos for the Pandas Topic
+* [Introduction to Pandas](01_pandas.ipynb)
+* [Working with Dates and Times](02_datetime.ipynb)
+* [Exercises for practice](exercises/)
 
 
 
